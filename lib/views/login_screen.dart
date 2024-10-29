@@ -4,7 +4,7 @@ import 'package:food_app/common/common_widget.dart';
 import 'package:food_app/utils/constant/color_constants.dart';
 import 'package:food_app/utils/custom_text.dart';
 import 'package:food_app/utils/extensions.dart';
-import 'package:food_app/views/home_screen.dart';
+import 'package:food_app/views/home/home_screen.dart';
 import 'package:pinput/pinput.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -80,10 +80,10 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                     ],
                   ).padOnly(b: 40),
-                  CustomText.title(text: "Mobile No.", color: Colors.white)
-                      .padOnly(l: 4, b: 8),
-                  CommonWidget.customLoginTextField("Enter Mobile No.",
+                  CommonWidget.customTextFieldWithLabel(
+                          "Mobile No.", "Enter Mobile No.",
                           keyboardType: TextInputType.phone,
+                          labelColor: Colors.white,
                           controller: mobileTFController)
                       .padOnly(b: 40),
                   Center(
@@ -185,8 +185,8 @@ class _LoginScreenState extends State<LoginScreen> {
                     CommonWidget.roundedButton(
                         context: context,
                         title: "Verify OTP",
-                        onTap: () =>
-                            CommonWidget.replaceWith(context, const HomeScreen())),
+                        onTap: () => CommonWidget.replaceWith(
+                            context, const HomeScreen())),
                   ],
                 ).padSymm(vertical: 20, horizontal: 15),
               ),

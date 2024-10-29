@@ -9,14 +9,16 @@ class CommonAppbar extends StatelessWidget implements PreferredSize {
   const CommonAppbar({
     super.key,
     required this.title,
+    this.bgColor = Colors.white,
   });
   final String title;
+  final Color bgColor;
 
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Container(
-          color: Colors.white,
+          color: bgColor,
           padding: const EdgeInsets.symmetric(horizontal: 15),
           child: Row(
             children: [

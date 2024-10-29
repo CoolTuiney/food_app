@@ -20,52 +20,62 @@ class CommonWidget {
         context, MaterialPageRoute(builder: (context) => screen));
   }
 
-  static Widget customLoginTextField(String hint,
+  static Widget customTextFieldWithLabel(String label, String hint,
       {TextInputType? keyboardType,
       required TextEditingController controller,
       Function(String, String)? validator,
       String? initVal,
+      Color? labelColor = ColorConstant.primaryTextColor,
+      EdgeInsetsGeometry? contentPadding =
+          const EdgeInsets.symmetric(vertical: 14, horizontal: 15),
       List<TextInputFormatter>? inputFormatters}) {
-    return TextFormField(
-      controller: controller,
-      initialValue: initVal,
-      // autovalidateMode: AutovalidateMode.onUserInteraction,
-      keyboardType: keyboardType,
-      inputFormatters: inputFormatters,
-      textCapitalization: TextCapitalization.sentences,
-      validator: (value) {
-        if (validator != null) {
-          return validator(value ?? "", hint);
-        }
-        if (value!.trim().isEmpty) return "Please $hint";
-        return null;
-      },
-      decoration: InputDecoration(
-        hintText: hint,
-        fillColor: Colors.white,
-        filled: true,
-        labelStyle: TextStyle(color: Colors.grey.shade700),
-        errorStyle: CustomText.textStyle(size: 10, color: ColorConstant.red),
-        isDense: true,
-        contentPadding:
-            const EdgeInsets.symmetric(vertical: 14, horizontal: 15),
-        focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(10.r),
-          borderSide: const BorderSide(color: ColorConstant.primaryColor),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        CustomText.title(text: label, color: labelColor).padOnly(l: 4, b: 8),
+        TextFormField(
+          controller: controller,
+          initialValue: initVal,
+          // autovalidateMode: AutovalidateMode.onUserInteraction,
+          keyboardType: keyboardType,
+          inputFormatters: inputFormatters,
+          textCapitalization: TextCapitalization.sentences,
+          validator: (value) {
+            if (validator != null) {
+              return validator(value ?? "", hint);
+            }
+            if (value!.trim().isEmpty) return "Please $hint";
+            return null;
+          },
+          decoration: InputDecoration(
+            hintText: hint,
+            hintStyle: TextStyle(color: Colors.grey.shade500),
+            fillColor: Colors.white,
+            filled: true,
+            labelStyle: TextStyle(color: Colors.grey.shade700),
+            errorStyle:
+                CustomText.textStyle(size: 10, color: ColorConstant.red),
+            // isDense: true,
+            contentPadding: contentPadding,
+            focusedBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(10.r),
+              borderSide: const BorderSide(color: ColorConstant.primaryColor),
+            ),
+            enabledBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(10.r),
+              borderSide: BorderSide(color: Colors.grey.shade400),
+            ),
+            focusedErrorBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(10.r),
+              borderSide: BorderSide(color: ColorConstant.red),
+            ),
+            errorBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(10.r),
+              borderSide: BorderSide(color: ColorConstant.red),
+            ),
+          ),
         ),
-        enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(10.r),
-          borderSide: const BorderSide(color: Colors.black),
-        ),
-        focusedErrorBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(10.r),
-          borderSide: BorderSide(color: ColorConstant.red),
-        ),
-        errorBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(10.r),
-          borderSide: BorderSide(color: ColorConstant.red),
-        ),
-      ),
+      ],
     );
   }
 

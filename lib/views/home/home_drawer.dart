@@ -3,11 +3,13 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:food_app/common/common_widget.dart';
 import 'package:food_app/utils/extensions.dart';
 import 'package:food_app/views/cart_screen.dart';
+import 'package:food_app/views/delivery_address/delivery_address_screen.dart';
 import 'package:food_app/views/login_screen.dart';
 import 'package:food_app/views/my_orders_screen.dart';
+import 'package:food_app/views/profile/profile_screen.dart';
 
-import '../utils/constant/color_constants.dart';
-import '../utils/custom_text.dart';
+import '../../utils/constant/color_constants.dart';
+import '../../utils/custom_text.dart';
 
 class HomeDrawer extends StatelessWidget {
   const HomeDrawer({
@@ -25,8 +27,14 @@ class HomeDrawer extends StatelessWidget {
           title: "My Orders",
           img: "ic_my_orders.png",
           navigateTo: const MyOrdersScreen()),
-      DrawerItem(title: "Profile", img: "ic_profile.png"),
-      DrawerItem(title: "Delivery Address", img: "ic_location.png"),
+      DrawerItem(
+          title: "Profile",
+          img: "ic_profile.png",
+          navigateTo: const ProfileScreen()),
+      DrawerItem(
+          title: "Delivery Address",
+          img: "ic_location.png",
+          navigateTo: const DeliveryAddressScreen()),
       DrawerItem(title: "Contact Us", img: "ic_message.png"),
       DrawerItem(title: "Help & FAQs", img: "ic_help.png"),
     ];
