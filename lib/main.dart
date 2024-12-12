@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:food_app/providers/login_controller.dart';
 import 'package:food_app/utils/app_theme.dart';
 import 'package:food_app/views/home/home_controller.dart';
 import 'package:food_app/views/home/home_screen.dart';
@@ -20,7 +21,10 @@ class MyApp extends StatelessWidget {
     return ScreenUtilInit(
       designSize: const Size(375, 812),
       child: MultiProvider(
-        providers: [ChangeNotifierProvider(create: (_) => HomeController())],
+        providers: [
+          ChangeNotifierProvider(create: (_) => HomeController()),
+          ChangeNotifierProvider(create: (_) => LoginController()),
+        ],
         child: MaterialApp(
             debugShowCheckedModeBanner: false,
             title: 'Flutter Demo',
