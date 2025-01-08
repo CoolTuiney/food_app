@@ -1,13 +1,19 @@
+import 'package:food_app/providers/login_controller.dart';
 import 'package:food_app/service/networking/api_requests.dart';
+import 'package:get/get.dart';
 
 abstract class APIHeaders {
   static Future<Map<String, String>?> getHeaders(APIRequest request) async {
     Map<String, String>? headers;
-
+    final LoginController loginController = Get.find<LoginController>();
     if (request.isHeadersRequired) {
       headers = {
         if (request.isContentTypeRequired)
           'Content-Type': _getContentType(request),
+        'p1': loginController.mobileTFController.text,
+        'p2': 'android',
+        'p3': '1.1',
+        ...?request.headers
       };
     }
 

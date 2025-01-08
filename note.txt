@@ -1,0 +1,7 @@
+1. Food listing category 
+2. No image for produts
+3. add/get to card url
+4. checkappversion
+5. user details?
+6. address
+7. all orders

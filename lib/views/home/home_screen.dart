@@ -6,28 +6,26 @@ import 'package:food_app/utils/constant/color_constants.dart';
 import 'package:food_app/utils/custom_text.dart';
 import 'package:food_app/utils/extensions.dart';
 import 'package:food_app/views/home/bottom_nav_bar.dart';
-import 'package:food_app/views/home/home_controller.dart';
+import 'package:food_app/providers/home_controller.dart';
 import 'package:food_app/views/home/meal_screen.dart';
 import 'package:food_app/views/home/snack_screen.dart';
 import 'package:food_app/views/home/special_food_screen.dart';
 import 'package:food_app/views/product_detail_screen.dart';
-import 'package:provider/provider.dart';
+import 'package:get/get.dart';
 
 import 'home_drawer.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
-
   @override
   Widget build(BuildContext context) {
+    final HomeController homeController = Get.put(HomeController());
     const bodyList = [MealScreen(), SpecialFoodScreen(), SnackScreen()];
     return Scaffold(
       appBar: const HomeScreenAppBar(),
       drawer: const HomeDrawer(),
-      body: Consumer<HomeController>(
-        builder: (BuildContext context, homeController, Widget? child) =>
-            SingleChildScrollView(child: bodyList[homeController.navIndex]),
-      ),
+      body: Obx(() => SingleChildScrollView(
+          child: bodyList[homeController.navIndex.value])),
       bottomNavigationBar: const CustomNavigationBar(),
     );
   }

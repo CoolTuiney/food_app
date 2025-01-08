@@ -13,6 +13,10 @@ class CommonWidget {
         context, MaterialPageRoute(builder: (context) => screen));
   }
 
+  static Future<dynamic> pop(BuildContext context) async {
+    return Navigator.pop(context);
+  }
+
   static Future<dynamic> replaceWith(
       BuildContext context, Widget? screen) async {
     if (screen == null) return;
@@ -26,6 +30,7 @@ class CommonWidget {
       Function(String, String)? validator,
       String? initVal,
       Color? labelColor = ColorConstant.primaryTextColor,
+      bool readOnly = false,
       EdgeInsetsGeometry? contentPadding =
           const EdgeInsets.symmetric(vertical: 14, horizontal: 15),
       List<TextInputFormatter>? inputFormatters}) {
@@ -36,6 +41,7 @@ class CommonWidget {
         TextFormField(
           controller: controller,
           initialValue: initVal,
+          readOnly: readOnly,
           // autovalidateMode: AutovalidateMode.onUserInteraction,
           keyboardType: keyboardType,
           inputFormatters: inputFormatters,

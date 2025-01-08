@@ -1,11 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:food_app/common/common_widget.dart';
+import 'package:food_app/providers/login_controller.dart';
+import 'package:food_app/service/networking/api_requests.dart';
+import 'package:food_app/service/networking/api_service.dart';
 import 'package:food_app/utils/constant/color_constants.dart';
 import 'package:food_app/utils/custom_text.dart';
 import 'package:food_app/utils/extensions.dart';
 import 'package:food_app/views/home/home_screen.dart';
+import 'package:get/get.dart';
 import 'package:pinput/pinput.dart';
+import 'package:razorpay_flutter/razorpay_flutter.dart';
+
+import '../utils/constant/end_point.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -15,10 +22,9 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  final mobileTFController = TextEditingController();
-
   @override
   Widget build(BuildContext context) {
+    LoginController loginController = Get.put(LoginController());
     final size = MediaQuery.of(context).size;
     return Scaffold(
       body: SingleChildScrollView(
@@ -42,7 +48,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   style: CustomText.textStyle(
                       size: 45, color: Colors.black, bold: true)),
               TextSpan(
-                  text: "\nFoodHub",
+                  text: "\ Homely Food",
                   style: CustomText.textStyle(
                       size: 45, color: ColorConstant.primaryColor, bold: true)),
               TextSpan(
@@ -84,13 +90,17 @@ class _LoginScreenState extends State<LoginScreen> {
                           "Mobile No.", "Enter Mobile No.",
                           keyboardType: TextInputType.phone,
                           labelColor: Colors.white,
-                          controller: mobileTFController)
+                          controller: loginController.mobileTFController)
                       .padOnly(b: 40),
                   Center(
                     child: CommonWidget.roundedButton(
                         context: context,
                         title: "Get OTP",
-                        onTap: () => showOTPBottomsheet(context)),
+                        onTap: () async {
+                          if (await loginController.sendOTP()) {
+                            showOTPBottomsheet(context);
+                          }
+                        }),
                   )
                 ],
               ).padOnly(b: 100),
@@ -101,7 +111,52 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
+  startRazerPay() {
+    Razorpay razorpay = Razorpay();
+    var options = {
+      'key': 'rzp_live_ILgsfZCZoFIKMb',
+      'amount': 100,
+      'name': 'Acme Corp.',
+      'description': 'Fine T-Shirt',
+      'retry': {'enabled': true, 'max_count': 1},
+      'send_sms_hash': true,
+      'prefill': {'contact': '8888888888', 'email': 'test@razorpay.com'},
+      'external': {
+        'wallets': ['paytm']
+      }
+    };
+    razorpay.on(Razorpay.EVENT_PAYMENT_ERROR, handlePaymentErrorResponse);
+    razorpay.on(Razorpay.EVENT_PAYMENT_SUCCESS, handlePaymentSuccessResponse);
+    razorpay.on(Razorpay.EVENT_EXTERNAL_WALLET, handleExternalWalletSelected);
+    razorpay.open(options);
+  }
+
+  void handlePaymentErrorResponse(PaymentFailureResponse response) {
+    /*
+    * PaymentFailureResponse contains three values:
+    * 1. Error Code
+    * 2. Error Description
+    * 3. Metadata
+    * */
+    // showAlertDialog(context, "Payment Failed", "Code: ${response.code}\nDescription: ${response.message}\nMetadata:${response.error.toString()}");
+  }
+
+  void handlePaymentSuccessResponse(PaymentSuccessResponse response) {
+    /*
+    * Payment Success Response contains three values:
+    * 1. Order ID
+    * 2. Payment ID
+    * 3. Signature
+    * */
+    // showAlertDialog(context, "Payment Successful", "Payment ID: ${response.paymentId}");
+  }
+
+  void handleExternalWalletSelected(ExternalWalletResponse response) {
+    // showAlertDialog(context, "External Wallet Selected", "${response.walletName}");
+  }
+
   showOTPBottomsheet(BuildContext context) {
+    final loginController = Get.find<LoginController>();
     const focusedBorderColor = Color.fromRGBO(23, 171, 144, 1);
     const fillColor = Color.fromRGBO(243, 246, 249, 0);
     const borderColor = ColorConstant.primaryColor;
@@ -152,6 +207,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                 isBold: true))
                         .padOnly(b: 30),
                     Pinput(
+                      controller: loginController.otpTFController,
                       focusedPinTheme: defaultPinTheme.copyWith(
                         decoration: defaultPinTheme.decoration!.copyWith(
                           borderRadius: BorderRadius.circular(8),
@@ -185,8 +241,13 @@ class _LoginScreenState extends State<LoginScreen> {
                     CommonWidget.roundedButton(
                         context: context,
                         title: "Verify OTP",
-                        onTap: () => CommonWidget.replaceWith(
-                            context, const HomeScreen())),
+                        onTap: () async {
+                          if (await loginController.verifyOTP()) {
+                            CommonWidget.pop(context);
+                            CommonWidget.replaceWith(
+                                context, const HomeScreen());
+                          }
+                        }),
                   ],
                 ).padSymm(vertical: 20, horizontal: 15),
               ),

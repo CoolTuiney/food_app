@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:flutter/services.dart';
 import 'package:food_app/service/networking/api_requests.dart';
+import 'package:food_app/service/networking/curl_logger_interceptor.dart';
 
 import '../../utils/constant/end_point.dart';
 import 'api_response_handler.dart';
@@ -11,14 +12,17 @@ import 'api_headers.dart';
 class ApiService {
   final Dio dio;
 
-  ApiService()
+  ApiService._()
       : dio = Dio(
           BaseOptions(
-            baseUrl: EndPoint.localHost,
-            connectTimeout: const Duration(seconds: 30),
-            receiveTimeout: const Duration(seconds: 30),
+            baseUrl: EndPoint.baseUrl,
+            connectTimeout: const Duration(seconds: 60),
+            receiveTimeout: const Duration(seconds: 60),
           ),
-        ) {}
+        ) {
+    dio.interceptors.add(CurlLoggerInterceptor());
+  }
+  static final ApiService instance = ApiService._();
 
   Future<T?> getRequest<T>(APIRequest request) async => await handleResponse(
         request,

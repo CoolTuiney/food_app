@@ -35,8 +35,8 @@ class HomeDrawer extends StatelessWidget {
           title: "Delivery Address",
           img: "ic_location.png",
           navigateTo: const DeliveryAddressScreen()),
-      DrawerItem(title: "Contact Us", img: "ic_message.png"),
-      DrawerItem(title: "Help & FAQs", img: "ic_help.png"),
+      /*  DrawerItem(title: "Contact Us", img: "ic_message.png"),
+      DrawerItem(title: "Help & FAQs", img: "ic_help.png") */
     ];
     return SafeArea(
         child: Drawer(

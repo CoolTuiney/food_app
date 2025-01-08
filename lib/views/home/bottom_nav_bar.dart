@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:food_app/views/home/home_controller.dart';
-import 'package:provider/provider.dart';
+import 'package:food_app/providers/home_controller.dart';
+import 'package:get/get.dart';
 
 class CustomNavigationBar extends StatefulWidget {
   const CustomNavigationBar({
@@ -14,16 +14,15 @@ class CustomNavigationBar extends StatefulWidget {
 class _CustomNavigationBarState extends State<CustomNavigationBar> {
   @override
   Widget build(BuildContext context) {
-    return Consumer<HomeController>(
-      builder: (BuildContext context, homeController, Widget? child) {
-        return NavigationBar(
+    final HomeController homeController = Get.find<HomeController>();
+    return Obx(() => NavigationBar(
           elevation: 5,
           shadowColor: Colors.black,
           surfaceTintColor: Colors.white,
           indicatorColor: Theme.of(context).colorScheme.primary,
-          selectedIndex: homeController.navIndex,
+          selectedIndex: homeController.navIndex.value,
           onDestinationSelected: (v) {
-            homeController.setNavIndex(v);
+            homeController.navIndex.value = v;
           },
           destinations: const [
             NavigationDestination(
@@ -42,8 +41,6 @@ class _CustomNavigationBarState extends State<CustomNavigationBar> {
               label: 'Snacks',
             ),
           ],
-        );
-      },
-    );
+        ));
   }
 }
