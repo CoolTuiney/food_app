@@ -38,7 +38,7 @@ class FoodItemCard1 extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => CommonWidget.pushTo(context, ProductDetailScreen()),
+      // onTap: () => CommonWidget.pushTo(context, ProductDetailScreen()),
       child: Container(
         margin: EdgeInsets.symmetric(vertical: 15.h),
         decoration: BoxDecoration(

@@ -76,14 +76,16 @@ class LocationService {
     }
   }
 
-  Future<void> getUserLocation() async {
+  Future<String> getUserLocation() async {
     try {
       Position position = await _getCurrentLocation();
       print("${position.latitude} ${position.longitude}");
       String address = await _getAddressFromLatLng(position);
       print("Address: $address");
+      return address;
     } catch (e) {
       print("Error getting location: $e");
+      return '';
     }
   }
 }

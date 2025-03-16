@@ -11,29 +11,31 @@ class LoginController extends GetxController {
   var isLoading = false.obs;
 
   Future<bool> sendOTP() async {
-    try {
-      isLoading.value = true;
-      final request = APIRequest(body: {}, apiPath: EndPoint.sendOTP);
-      var res = await ApiService.instance.postRequest(request);
-      isLoading.value = false;
-      return res["message"] == 'Success';
-    } catch (e) {
-      isLoading.value = false;
-      return false;
-    }
+    // try {
+    //   isLoading.value = true;
+    //   final request = APIRequest(body: {}, apiPath: EndPoint.sendOTP);
+    //   var res = await ApiService.instance.postRequest(request);
+    //   isLoading.value = false;
+    //   return res["message"] == 'Success';
+    // } catch (e) {
+    //   isLoading.value = false;
+    //   return false;
+    // }
+    return true;
   }
 
   Future<bool> verifyOTP() async {
-    try {
-      isLoading.value = true;
+    // try {
+    //   isLoading.value = true;
 
-      final request =
-          APIRequest(body: {"otp": "string"}, apiPath: EndPoint.verifydOTP);
-      var res = await ApiService.instance.postRequest(request);
-      return res["message"] == 'Success';
-    } catch (e) {
-      isLoading.value = false;
-      return false;
-    }
+    //   final request =
+    //       APIRequest(body: {"otp": "string"}, apiPath: EndPoint.verifydOTP);
+    //   var res = await ApiService.instance.postRequest(request);
+    //   return res["message"] == 'Success';
+    // } catch (e) {
+    //   isLoading.value = false;
+    //   return false;
+    // }
+    return true;
   }
 }

@@ -50,6 +50,7 @@ class _OrderTabBarState extends State<OrderTabBar>
                   width: 2,
                   color: ColorConstant.grayTextColor.withOpacity(0.1))),
           child: TabBar(
+              dividerColor: Colors.transparent,
               splashBorderRadius: BorderRadius.circular(50),
               controller: tabControllr,
               unselectedLabelColor: ColorConstant.primaryColor,

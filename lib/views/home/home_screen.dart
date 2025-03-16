@@ -5,6 +5,7 @@ import 'package:food_app/service/locatioin_service.dart';
 import 'package:food_app/utils/constant/color_constants.dart';
 import 'package:food_app/utils/custom_text.dart';
 import 'package:food_app/utils/extensions.dart';
+import 'package:food_app/views/cart_screen.dart';
 import 'package:food_app/views/home/bottom_nav_bar.dart';
 import 'package:food_app/providers/home_controller.dart';
 import 'package:food_app/views/home/meal_screen.dart';
@@ -24,8 +25,10 @@ class HomeScreen extends StatelessWidget {
     return Scaffold(
       appBar: const HomeScreenAppBar(),
       drawer: const HomeDrawer(),
-      body: Obx(() => SingleChildScrollView(
-          child: bodyList[homeController.navIndex.value])),
+      body: Obx(() => (homeController.isHomeScreenLoading.value)
+          ? Center(child: const CircularProgressIndicator())
+          : SingleChildScrollView(
+              child: bodyList[homeController.navIndex.value])),
       bottomNavigationBar: const CustomNavigationBar(),
     );
   }
@@ -38,6 +41,7 @@ class HomeScreenAppBar extends StatelessWidget implements PreferredSize {
 
   @override
   Widget build(BuildContext context) {
+    final HomeController homeController = Get.find<HomeController>();
     return SafeArea(
       child: Container(
           color: Colors.white,
@@ -71,7 +75,8 @@ class HomeScreenAppBar extends StatelessWidget implements PreferredSize {
               Expanded(
                 child: GestureDetector(
                   onTap: () async {
-                    await LocationService().getUserLocation();
+                    homeController.currLocation.value =
+                        await LocationService().getUserLocation();
                   },
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -91,18 +96,58 @@ class HomeScreenAppBar extends StatelessWidget implements PreferredSize {
                           ).rotate(270).padOnly(t: 3, l: 5)
                         ],
                       ),
-                      CustomText.title(
-                              text: "4102 Pretty view lane", isBold: true)
-                          .padOnly(t: 2),
+                      Obx(
+                        () => CustomText.title(
+                                text: homeController.currLocation.value,
+                                isBold: true)
+                            .padOnly(t: 2, l: 15),
+                      ),
                     ],
                   ),
                 ),
               ),
-              Image.asset(
-                "assets/icons/img_profile_dummy.png",
-                height: 40,
-                width: 40,
-              ).clipR(12)
+              Obx(
+                () => SizedBox(
+                  height: 40,
+                  width: 35,
+                  child: GestureDetector(
+                    onTap: () {
+                      CommonWidget.pushTo(context, const CartScreen());
+                    },
+                    child: Stack(
+                      children: [
+                        Center(
+                          child: Image.asset(
+                            "assets/icons/ic_add_cart.png",
+                            height: 25,
+                            width: 25,
+                            color: ColorConstant.primaryColor,
+                          ),
+                        ),
+                        Positioned(
+                          right: 0, // Positioning the badge
+                          top: 0,
+                          child: Container(
+                            padding: const EdgeInsets.all(4),
+                            decoration: const BoxDecoration(
+                              color: ColorConstant.primaryColor,
+                              shape: BoxShape.circle,
+                            ),
+                            child: Text(
+                              "${homeController.cartList.length}",
+                              style: const TextStyle(
+                                color: Colors.white,
+                                fontSize: 12,
+                              ),
+                            ),
+                          ),
+                        ).visible(
+                            isVisible: homeController.cartList.isNotEmpty),
+                      ],
+                    ),
+                  ),
+                ),
+              )
             ],
           )),
     );

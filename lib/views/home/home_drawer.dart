@@ -8,6 +8,7 @@ import 'package:food_app/views/login_screen.dart';
 import 'package:food_app/views/my_orders_screen.dart';
 import 'package:food_app/views/profile/profile_screen.dart';
 
+import '../../service/shared_pref.dart';
 import '../../utils/constant/color_constants.dart';
 import '../../utils/custom_text.dart';
 
@@ -21,7 +22,7 @@ class HomeDrawer extends StatelessWidget {
     final drawerList = [
       DrawerItem(
           title: "My Cart",
-          img: "ic_my_orders.png",
+          img: "ic_add_cart.png",
           navigateTo: const CartScreen()),
       DrawerItem(
           title: "My Orders",
@@ -58,12 +59,12 @@ class HomeDrawer extends StatelessWidget {
                     backgroundImage:
                         const AssetImage("assets/icons/img_profile_dummy.png"),
                   ).padOnly(b: 10, l: 20, r: 20),
-                  CustomText.title(text: "Farion Wick", isBold: true, size: 20)
+                  CustomText.title(text: "Welcome", isBold: true, size: 20)
                       .padOnly(b: 4, t: 4, l: 20, r: 20),
-                  CustomText.title(
-                          text: "farionwick@gmail.com",
-                          color: ColorConstant.grayTextColor)
-                      .padOnly(b: 30, l: 20, r: 20),
+                  // CustomText.title(
+                  //         text: "farionwick@gmail.com",
+                  //         color: ColorConstant.grayTextColor)
+                  //     .padOnly(b: 30, l: 20, r: 20),
                   ...drawerList.map((e) => InkWell(
                       onTap: () {
                         Navigator.pop(context);
@@ -80,8 +81,10 @@ class HomeDrawer extends StatelessWidget {
             child: CommonWidget.roundedBtnWithIcon(
               title: "Logout",
               icon: "assets/icons/ic_logout.png",
-              onTap: () =>
-                  CommonWidget.replaceWith(context, const LoginScreen()),
+              onTap: () {
+                SharedPref.removeString(SharedPref.userLogin);
+                CommonWidget.replaceWith(context, const LoginScreen());
+              },
             ),
           )
         ],
@@ -97,6 +100,7 @@ class HomeDrawer extends StatelessWidget {
             "assets/icons/$img",
             height: 22,
             width: 22,
+            color: Colors.black,
           ).padOnly(r: 20),
           CustomText.title(text: title, size: 16)
         ],

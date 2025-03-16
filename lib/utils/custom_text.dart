@@ -24,7 +24,7 @@ class CustomText {
   }
 
   static Widget title(
-      {required String text,
+      {required String? text,
       double size = 14,
       Color? color,
       bool? isBold,
@@ -35,7 +35,7 @@ class CustomText {
       EdgeInsetsGeometry? padding}) {
     return Padding(
       padding: padding ?? const EdgeInsets.all(0),
-      child: Text(text,
+      child: Text(text ?? "",
           overflow: overflow ?? TextOverflow.ellipsis,
           textAlign: textAlign,
           maxLines: maxLine,

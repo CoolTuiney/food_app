@@ -24,20 +24,32 @@ class _CustomNavigationBarState extends State<CustomNavigationBar> {
           onDestinationSelected: (v) {
             homeController.navIndex.value = v;
           },
-          destinations: const [
+          destinations: [
             NavigationDestination(
-              icon: Icon(Icons.explore_outlined),
-              selectedIcon: Icon(Icons.explore, color: Colors.white),
+              icon: Image.asset(
+                'assets/icons/ic_meal.png',
+                height: 26,
+              ),
+              selectedIcon: Image.asset('assets/icons/ic_meal.png',
+                  height: 26, color: Colors.white),
               label: 'Meal',
             ),
             NavigationDestination(
-              icon: Icon(Icons.commute_outlined),
-              selectedIcon: Icon(Icons.commute, color: Colors.white),
+              icon: Image.asset(
+                'assets/icons/ic_special_meal.png',
+                height: 26,
+              ),
+              selectedIcon: Image.asset('assets/icons/ic_special_meal.png',
+                  height: 26, color: Colors.white),
               label: 'Special',
             ),
             NavigationDestination(
-              icon: Icon(Icons.bookmark_border),
-              selectedIcon: Icon(Icons.bookmark, color: Colors.white),
+              icon: Image.asset(
+                'assets/icons/ic_snack.png',
+                height: 26,
+              ),
+              selectedIcon: Image.asset('assets/icons/ic_snack.png',
+                  height: 26, color: Colors.white),
               label: 'Snacks',
             ),
           ],

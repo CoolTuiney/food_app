@@ -3,6 +3,7 @@
 import 'dart:io';
 
 import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
 
 import '../../utils/constant/string_constants.dart';
 import 'api_exception.dart';
@@ -42,6 +43,7 @@ Future<T?> handleResponse<T>(APIRequest request, Function() body) async {
         throw InternalErrorException(_errDecoder(response));
     }
   } catch (_) {
+    debugPrint(_.toString());
     throw _catchError(_);
   }
 

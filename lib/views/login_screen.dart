@@ -4,9 +4,11 @@ import 'package:food_app/common/common_widget.dart';
 import 'package:food_app/providers/login_controller.dart';
 import 'package:food_app/service/networking/api_requests.dart';
 import 'package:food_app/service/networking/api_service.dart';
+import 'package:food_app/service/shared_pref.dart';
 import 'package:food_app/utils/constant/color_constants.dart';
 import 'package:food_app/utils/custom_text.dart';
 import 'package:food_app/utils/extensions.dart';
+import 'package:food_app/utils/stylish_toast.dart';
 import 'package:food_app/views/home/home_screen.dart';
 import 'package:get/get.dart';
 import 'package:pinput/pinput.dart';
@@ -53,7 +55,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       size: 45, color: ColorConstant.primaryColor, bold: true)),
               TextSpan(
                   text:
-                      "\n\nYour favourite food delivered fast at \nyour doorstep.",
+                      "\n\nYour favourite home-cooked meals delivered\n to your doorstep!",
                   style: CustomText.textStyle(
                       size: 14, color: const Color(0xFF30384F), bold: true)),
             ]).padOnly(t: 170, l: 35, r: 35),
@@ -243,6 +245,8 @@ class _LoginScreenState extends State<LoginScreen> {
                         title: "Verify OTP",
                         onTap: () async {
                           if (await loginController.verifyOTP()) {
+                            SharedPref.set(SharedPref.userLogin,
+                                loginController.mobileTFController.text);
                             CommonWidget.pop(context);
                             CommonWidget.replaceWith(
                                 context, const HomeScreen());
